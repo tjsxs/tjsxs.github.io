@@ -1,36 +1,45 @@
 var ids = [];
 var currentValue = 0;
+var fixedItem = document.getElementById("list");
 
-function addItem(){
-    currentValue = document.getElementById("input-value");
-    if(currentValue.value === null || currentValue.value === ""){
-        alert("Please input some value!");
-        return false;
-    }
+
+// Create li HTML elements for list item
+var generateItem = function(){
     
-    var newID = ranGenerator();
+    var listItem = document.createElement("li");
     
-    var li = "<li id='item-"+ newID +"' onClick='deleteItem(this.id);'>" + currentValue.value + "</li>";
+    var label = document.createElement("label");
+        label.textContent ="aha";
     
-    var fixedItem = document.getElementById("fixed");
-    fixedItem.insertAdjacentHTML('afterEnd', li);
-    currentValue.value = null;
+    var checkBox = document.createElement("input");
+        checkBox.type="checkbox";
+    
+    var editButton = document.createElement("button");
+        editButton.className="btn edit-btn";
+    
+    var deleteButton = document.createElement("button");
+        deleteButton.className="btn delete-btn";
+    
+    var editInput = document.createElement("input");
+        editInput.type="text";
+    
+    listItem.appendChild(checkBox);
+    listItem.appendChild(label);
+    label.innerHTML = document.getElementById("input-value").value;
+    listItem.appendChild(deleteButton);
+    listItem.appendChild(editButton);
+    
+    fixedItem.insertBefore(listItem, fixedItem.firstChild);
+    document.getElementById("input-value").value="";  
+    
+    deleteButton.addEventListener("click", deleteItem);
 }
 
-function deleteItem(itemID){
-    var itemToDelete = document.getElementById(itemID);
-    itemToDelete.parentNode.removeChild(itemToDelete);
-}
 
+// Event listner for button
+document.getElementById("submit-btn").addEventListener("click", generateItem);
 
-function ranGenerator(){
-    var ranID = Math.round(Math.random() * 1000);
-    
-    for(var key in ids){
-        if(ids[key] === ranID){
-            ranID = ranGenerator();
-        }
-    }
-    ids.push(ranID);
-    return ranID;
+//Delete item
+function deleteItem(){
+    this.parentNode.parentNode.removeChild(this.parentNode);
 }
